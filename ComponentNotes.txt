@@ -1,0 +1,16 @@
+EXOHostedContentFilterPolicy
+EXOHostedContentFilterRule
+EXOHostedConnectionFilterPolicy
+EXOHostedConnectionFilterRule
+EXOHostedOutboundSpamFilterPolicy
+EXOHostedOutboundSpamFilterRule
+EXOAntiPhishPolicy
+EXOAntiPhishRule
+EXOSafeLinksPolicy
+EXOSafeLinksRule
+EXOSafeAttachmentPolicy
+EXOSafeAttachmentRule
+EXOMalwareFilterPolicy
+EXOMalwareFilterRule
+SCDLPCompliancePolicy
+SCDLPComplianceRule
