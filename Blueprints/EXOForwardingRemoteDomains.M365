@@ -1,0 +1,72 @@
+# Generated with Microsoft365DSC version 1.24.710.1
+# For additional information on how to use Microsoft365DSC, please visit https://aka.ms/M365DSC
+param (
+    [parameter()]
+    [System.Management.Automation.PSCredential]
+    $Credential
+)
+
+Configuration RemoteDomain
+{
+    param (
+        [parameter()]
+        [System.Management.Automation.PSCredential]
+        $Credential
+    )
+
+    if ($null -eq $Credential)
+    {
+        <# Credentials #>
+        $Credscredential = Get-Credential -Message "Credentials"
+
+    }
+    else
+    {
+        $CredsCredential = $Credential
+    }
+
+    $OrganizationName = $CredsCredential.UserName.Split('@')[1]
+
+    Import-DscResource -ModuleName 'Microsoft365DSC' -ModuleVersion '1.24.710.1'
+
+    Node localhost
+    {
+        EXORemoteDomain "EXORemoteDomain-Default"
+        {
+            AllowedOOFType                       = "External";
+            AutoForwardEnabled                   = $False;              ### L1 | Auto-forwarding to remote domains should not be allowed
+            AutoReplyEnabled                     = $True;
+           Credential                           = $Credscredential;
+            DeliveryReportEnabled                = $True;
+            DisplaySenderName                    = $True;
+            DomainName                           = "*";
+            Ensure                               = "Present";
+            Identity                             = "Default";
+            Name                                 = "Default";
+        }
+        EXOManagementRole "EXOManagementRole-MyBaseOptions-DisableForwarding"
+        {
+            Credential           = $Credscredential;
+            Description          = "";
+            Ensure               = "Present";
+            Name                 = "MyBaseOptions-DisableForwarding";
+            Parent               = "missandbox.onmicrosoft.com\MyBaseOptions";
+        }
+        EXOManagementRoleEntry "EXOManagementRoleEntry-MyBaseOptions-DisableForwarding\Set-Mailbox"
+        {
+            Credential           = $Credscredential;
+            Identity             = "MyBaseOptions-DisableForwarding\Set-Mailbox";
+            Parameters           = @("AcceptMessagesOnlyFrom","AcceptMessagesOnlyFromDLMembers","AcceptMessagesOnlyFromSendersOrMembers","ErrorAction","ErrorVariable","ExternalOofOptions","GrantSendOnBehalfTo","Identity","Languages","MailTip","MailTipTranslations","MessageCopyForSendOnBehalfEnabled","MessageCopyForSentAsEnabled","MessageCopyForSMTPClientSubmissionEnabled","OutBuffer","OutVariable","Password","RejectMessagesFrom","RejectMessagesFromDLMembers","RejectMessagesFromSendersOrMembers","RequireSenderAuthenticationEnabled","UserCertificate","UserSMimeCertificate","WarningAction","WarningVariable");
+            Type                 = "Cmdlet";
+        }
+        EXOManagementRoleAssignment "EXOManagementRoleAssignment-MyBaseOptions-DisableForwarding-Default Role Assignment Policy"
+        {
+            Credential           = $Credscredential;
+            Ensure               = "Present";
+            Name                 = "MyBaseOptions-DisableForwarding-Default Role Assignment Policy";
+            Policy               = "Default Role Assignment Policy";
+            Role                 = "MyBaseOptions-DisableForwarding";
+        }
+}
+
+RemoteDomain -ConfigurationData .\ConfigurationData.psd1 -Credential $Credential
