@@ -6,7 +6,7 @@ param (
     $Credential
 )
 
-Configuration RemoteDomain
+Configuration EXORemoteDomain
 {
     param (
         [parameter()]
@@ -69,4 +69,4 @@ Configuration RemoteDomain
         }
 }
 
-RemoteDomain -ConfigurationData .\ConfigurationData.psd1 -Credential $Credential
+EXORemoteDomain -ConfigurationData .\ConfigurationData.psd1 -Credential $Credential
