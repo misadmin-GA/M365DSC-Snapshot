@@ -18,5 +18,6 @@
     <File Build="0" Shared="False" ReferenceFunction="Invoke-DiffReportTest_ps1">DiffReportTest.ps1</File>
     <File Build="0" Shared="False" ReferenceFunction="Invoke-M365DSCTest_ps1">M365DSCTest.ps1</File>
     <File Build="0" Shared="False" ReferenceFunction="Invoke-MISSecPolicyTemplate_ps1">MISSecPolicyTemplate.ps1</File>
+    <File Build="0" ReferenceFunction="Show-TestLaunch_psf">SAPIEN_FORMS\TestLaunch.psf</File>
   </Files>
 </Project>
