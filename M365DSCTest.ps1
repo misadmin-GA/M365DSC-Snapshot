@@ -12,6 +12,7 @@ param (
 Import-Module .\HelperModule
 
 $configComponents =  @("EXOHostedContentFilterPolicy","EXOHostedConnectionFilterPolicy","EXOHostedOutboundSpamFilterPolicy")
+$configName = "ExportTest"
 
 # Define M365 Config object
 $fileName = $configName + ".ps1"
