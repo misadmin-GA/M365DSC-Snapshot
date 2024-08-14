@@ -4,9 +4,18 @@
   <ProjectType>0</ProjectType>
   <RememberPowerShellVersion>True</RememberPowerShellVersion>
   <PowerShellVersion>Local Machine - PowerShell V5 (64 Bit)</PowerShellVersion>
-  <Folders />
+  <Folders>
+    <Folder>M365Config</Folder>
+    <Folder>HelperModule</Folder>
+  </Folders>
   <Files>
     <File Build="0">Startup.pss</File>
     <File Build="2">.gitignore</File>
+    <File Build="2" Shared="False">M365Config\M365Config.psm1</File>
+    <File Build="2" Shared="False">HelperModule\HelperModule.psm1</File>
+    <File Build="0" Shared="False" ReferenceFunction="Invoke-ConfigReportTest_ps1">ConfigReportTest.ps1</File>
+    <File Build="0" Shared="False" ReferenceFunction="Invoke-DiffReportTest_ps1">DiffReportTest.ps1</File>
+    <File Build="0" Shared="False" ReferenceFunction="Invoke-M365DSCTest_ps1">M365DSCTest.ps1</File>
+    <File Build="0" Shared="False" ReferenceFunction="Invoke-MISSecPolicyTemplate_ps1">MISSecPolicyTemplate.ps1</File>
   </Files>
 </Project>
