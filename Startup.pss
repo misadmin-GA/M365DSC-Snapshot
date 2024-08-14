@@ -1,6 +1,5 @@
-﻿<File version="3.1">
-  <Code>
-    <![CDATA[#Define a Param block to use custom parameters in the project
+﻿<File version="3.2">
+  <Code><![CDATA[#Define a Param block to use custom parameters in the project
 #Param ($CustomParameter)
 
 function Main {
@@ -24,7 +23,7 @@ function Main {
 	#TODO: Add initialization script here (Load modules and check requirements)
 	
 	Add-Type -AssemblyName "System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-	[void][System.Windows.Forms.MessageBox]::Show('TODO: Add script to the Main function of Startup.pss', 'TODO') 
+	
 	
 	#--------------------------------------------------------------------------
 	
@@ -36,4 +35,5 @@ function Main {
 
 
 ]]></Code>
+  <TV>0</TV>
 </File>

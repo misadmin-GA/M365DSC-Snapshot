@@ -7,6 +7,7 @@
   <Folders>
     <Folder>M365Config</Folder>
     <Folder>HelperModule</Folder>
+    <Folder>SAPIEN_FORMS</Folder>
   </Folders>
   <Files>
     <File Build="0">Startup.pss</File>
