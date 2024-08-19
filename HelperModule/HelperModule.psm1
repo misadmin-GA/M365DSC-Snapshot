@@ -45,99 +45,68 @@ function Get-M365DSCWorkload
 	{
 		'AA'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('AzureAD'))
-			{
-				$workload = @{
-					WorkloadName		 = 'Azure AD'
-					Resource			 = $ResName
-				}
+			$workload = @{
+				WorkloadName		 = 'Azure AD'
+				Resource			 = $ResName
 			}
+
 		}
 		'EX'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('ExchangeOnline'))
-			{
-				$workload = @{
-					WorkloadName		 = 'ExchangeOnline'
-					Resource 			 = $ResName
-				}
+			$workload = @{
+				WorkloadName		 = 'ExchangeOnline'
+				Resource 			 = $ResName
 			}
 		}
 		'In'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('Intune'))
-			{
-				$workload = @{
-					WorkloadName		 = 'Intune'
-					Resource 	 		 = $ResName
-				}
+			
+			$workload = @{
+				WorkloadName		 = 'Intune'
+				Resource 	 		 = $ResName
 			}
 		}
 		'O3'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('O365'))
-			{
-				$workload = @{
-					WorkloadName		 = 'O365'
-					Resource 			 = $ResName
-				}
-			}
-			elseif (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('ExchangeOnline'))
-			{
-				$workload = @{
-					WorkloadName		 = 'ExchangeOnline'
-					Resource 			 = $ResName
-				}
+			$workload = @{
+				WorkloadName		 = 'O365'
+				Resource 			 = $ResName
 			}
 		}
 		'OD'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('PnP'))
-			{
-				$workload = @{
-					WorkloadName		 = 'OneDrive'
-					Resource 			 = $ResName
-				}
+			$workload = @{
+				WorkloadName		 = 'OneDrive'
+				Resource 			 = $ResName
 			}
 		}
 		'Pl'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
-			{
-				$workload = @{
-					WorkloadName		 = 'Planner'
-					Resource 			 = $ResName
-				}
+			$workload = @{
+				WorkloadName		 = 'Planner'
+				Resource 			 = $ResName
 			}
 		}
 		'SP'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('PnP'))
-			{
-				$workload = @{
-					WorkloadName		 = 'SharePoint'
-					Resource 			 = $ResName
-				}
+			
+			$workload = @{
+				WorkloadName		 = 'SharePoint'
+				Resource 			 = $ResName
 			}
 		}
 		'SC'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('SecurityComplianceCenter'))
-			{
-				$workload = @{
-					WorkloadName		 = 'SecurityComplianceCenter'
-					Resource 			 = $ResName
-				}
+			$workload = @{
+				WorkloadName		 = 'SecurityComplianceCenter'
+				Resource 			 = $ResName
 			}
 		}
 		'Te'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftTeams'))
-			{
-				$workload = @{
-					WorkloadName		 = 'MicrosoftTeams'
-					Resource 			 = $ResName
-				}
+			$workload = @{
+				WorkloadName		 = 'MicrosoftTeams'
+				Resource 			 = $ResName
 			}
 		}
 	}
