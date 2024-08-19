@@ -28,6 +28,124 @@ function Generate365DSCCertificate
     Set-M365DSCAgentCertificateConfiguration -ForceRenew
 }
 
+# Returns hashmap of a resource and its respective workload
+# This is for the generation of the resources checklist in Tenant Export User Interface
+function Get-M365DSCWorkload
+{
+	[CmdletBinding()]
+	[OutputType([System.Collections.Hashtable])]
+	param
+	(
+		[Parameter(Mandatory = $true, Position = 1)]
+		[System.String]$ResName = ""
+	)
+	
+	$workload = @{}
+	
+	switch ($res.Substring(0, 2).ToUpper())
+	{
+		'AA'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
+			{
+				$workload = @{
+					WorkloadName		 = 'MicrosoftGraph'
+					Resource			 = $res
+				}
+			}
+		}
+		'EX'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('ExchangeOnline'))
+			{
+				$workload += @{
+					WorkloadName		 = 'ExchangeOnline'
+					Resource 			 = $res
+				}
+			}
+		}
+		'In'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
+			{
+				$workload += @{
+					WorkloadName		 = 'MicrosoftGraph'
+					Resource 	 		 = $res
+				}
+			}
+		}
+		'O3'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph') -and $res -eq 'O365Group')
+			{
+				$workload += @{
+					WorkloadName		 = 'MicrosoftGraph'
+					Resource 			 = $res
+				}
+			}
+			elseif (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('ExchangeOnline'))
+			{
+				$workload += @{
+					WorkloadName		 = 'ExchangeOnline'
+					Resource 			 = $res
+				}
+			}
+		}
+		'OD'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('PnP'))
+			{
+				$workload += @{
+					WorkloadName		 = 'PnP'
+					Resource 			 = $res
+				}
+			}
+		}
+		'Pl'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
+			{
+				$workload += @{
+					WorkloadName		 = 'MicrosoftGraph'
+					Resource 			 = $res
+				}
+			}
+		}
+		'SP'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('PnP'))
+			{
+				$workload += @{
+					WorkloadName		 = 'PnP'
+					Resource 			 = $res
+				}
+			}
+		}
+		'SC'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('SecurityComplianceCenter'))
+			{
+				$workload += @{
+					WorkloadName		 = 'SecurityComplianceCenter'
+					Resource 			 = $res
+				}
+			}
+		}
+		'Te'
+		{
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftTeams'))
+			{
+				$workload += @{
+					WorkloadName		 = 'MicrosoftTeams'
+					Resource 			 = $res
+				}
+			}
+		}
+	}
+	return $workload
+}
+
+# Function for returning distinct workloads used from a list of M365DSC Resources
 function Get-M365DSCWorkloads
 {
     [CmdletBinding()]
