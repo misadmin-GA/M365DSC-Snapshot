@@ -538,6 +538,9 @@ function Build-ResourceNodeList
 		[System.Array]$Workloads
 	)
 	
+	# TODO: Optimize this function using Array Lists instead of arrays and 
+	#       remove unnecessary resourceMappings Array
+	
 	# First generate the resource to workload mappings
 	$resourceMappings = @()
 	foreach ($resource in $Resources)

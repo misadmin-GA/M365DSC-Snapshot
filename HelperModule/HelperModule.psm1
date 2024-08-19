@@ -46,7 +46,7 @@ function Get-M365DSCWorkload
 		'AA'
 		{
 			$workload = @{
-				WorkloadName		 = 'Azure AD'
+				WorkloadName		 = 'AzureAD'
 				Resource			 = $ResName
 			}
 
