@@ -42,15 +42,15 @@ function Get-M365DSCWorkload
 	
 	$workload = @{}
 	
-	switch ($res.Substring(0, 2).ToUpper())
+	switch ($ResName.Substring(0, 2).ToUpper())
 	{
 		'AA'
 		{
 			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
 			{
 				$workload = @{
-					WorkloadName		 = 'MicrosoftGraph'
-					Resource			 = $res
+					WorkloadName		 = 'Azure AD'
+					Resource			 = $ResName
 				}
 			}
 		}
@@ -58,9 +58,9 @@ function Get-M365DSCWorkload
 		{
 			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('ExchangeOnline'))
 			{
-				$workload += @{
+				$workload = @{
 					WorkloadName		 = 'ExchangeOnline'
-					Resource 			 = $res
+					Resource 			 = $ResName
 				}
 			}
 		}
@@ -68,26 +68,26 @@ function Get-M365DSCWorkload
 		{
 			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
 			{
-				$workload += @{
-					WorkloadName		 = 'MicrosoftGraph'
-					Resource 	 		 = $res
+				$workload = @{
+					WorkloadName		 = 'Intune'
+					Resource 	 		 = $ResName
 				}
 			}
 		}
 		'O3'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph') -and $res -eq 'O365Group')
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph') -and $ResName -eq 'O365Group')
 			{
-				$workload += @{
-					WorkloadName		 = 'MicrosoftGraph'
-					Resource 			 = $res
+				$workload = @{
+					WorkloadName		 = 'O365'
+					Resource 			 = $ResName
 				}
 			}
 			elseif (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('ExchangeOnline'))
 			{
-				$workload += @{
+				$workload = @{
 					WorkloadName		 = 'ExchangeOnline'
-					Resource 			 = $res
+					Resource 			 = $ResName
 				}
 			}
 		}
@@ -95,9 +95,9 @@ function Get-M365DSCWorkload
 		{
 			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('PnP'))
 			{
-				$workload += @{
-					WorkloadName		 = 'PnP'
-					Resource 			 = $res
+				$workload = @{
+					WorkloadName		 = 'OneDrive'
+					Resource 			 = $ResName
 				}
 			}
 		}
@@ -105,9 +105,9 @@ function Get-M365DSCWorkload
 		{
 			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
 			{
-				$workload += @{
-					WorkloadName		 = 'MicrosoftGraph'
-					Resource 			 = $res
+				$workload = @{
+					WorkloadName		 = 'Planner'
+					Resource 			 = $ResName
 				}
 			}
 		}
@@ -115,9 +115,9 @@ function Get-M365DSCWorkload
 		{
 			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('PnP'))
 			{
-				$workload += @{
-					WorkloadName		 = 'PnP'
-					Resource 			 = $res
+				$workload = @{
+					WorkloadName		 = 'SharePoint'
+					Resource 			 = $ResName
 				}
 			}
 		}
@@ -125,9 +125,9 @@ function Get-M365DSCWorkload
 		{
 			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('SecurityComplianceCenter'))
 			{
-				$workload += @{
+				$workload = @{
 					WorkloadName		 = 'SecurityComplianceCenter'
-					Resource 			 = $res
+					Resource 			 = $ResName
 				}
 			}
 		}
@@ -135,9 +135,9 @@ function Get-M365DSCWorkload
 		{
 			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftTeams'))
 			{
-				$workload += @{
+				$workload = @{
 					WorkloadName		 = 'MicrosoftTeams'
-					Resource 			 = $res
+					Resource 			 = $ResName
 				}
 			}
 		}
