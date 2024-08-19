@@ -32,7 +32,6 @@ function Generate365DSCCertificate
 # This is for the generation of the resources checklist in Tenant Export User Interface
 function Get-M365DSCWorkload
 {
-	[CmdletBinding()]
 	[OutputType([System.Collections.Hashtable])]
 	param
 	(
@@ -46,7 +45,7 @@ function Get-M365DSCWorkload
 	{
 		'AA'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('AzureAD'))
 			{
 				$workload = @{
 					WorkloadName		 = 'Azure AD'
@@ -66,7 +65,7 @@ function Get-M365DSCWorkload
 		}
 		'In'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph'))
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('Intune'))
 			{
 				$workload = @{
 					WorkloadName		 = 'Intune'
@@ -76,7 +75,7 @@ function Get-M365DSCWorkload
 		}
 		'O3'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('O365') -and $ResName -eq 'O365Group')
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('O365'))
 			{
 				$workload = @{
 					WorkloadName		 = 'O365'
@@ -148,8 +147,6 @@ function Get-M365DSCWorkload
 # Function for returning distinct workloads used from a list of M365DSC Resources
 function Get-M365DSCWorkloads
 {
-    [CmdletBinding()]
-    [OutputType([System.Array])]
     param
     (
         [Parameter(Mandatory = $true, Position = 1)]
@@ -185,7 +182,7 @@ function Get-M365DSCWorkloads
             }
             'O3'
             {
-                if (-not $workloads -or -not $workloads.Contains('O365') -and $res -eq 'O365Group')
+                if (-not $workloads -or -not $workloads.Contains('O365'))
                 {
                     $workloads += 'O365'
                 }
@@ -231,5 +228,5 @@ function Get-M365DSCWorkloads
             }
         }
     }
-    return ($workloads | Sort-Object {$_.Name})
+    return ($workloads | Sort-Object {$_})
 }

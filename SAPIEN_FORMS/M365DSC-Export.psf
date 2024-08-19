@@ -410,8 +410,7 @@ a5CLdsFVv3nlZYRU2Z/6Fcv0AOlj5ABcGJfXb5AD2mb9TMZ/JTmgoZP0ZQh+NrIZnY97tz9iv/Fz
 PXEcfkGn0e4dkU8OVBuh0qkflVC02YoTSsrHSRNKUW9y8Hy0u5LsF+/uWO4algHbVH4sl7h9v8dy
 6kSmhtNgLcb/5nj/AH1e+bT6Y93Y6+kx0FOWYKAv6SSHsxXWuDQbV17d5LHqMeUtFVxFYcttgX5d
 YSurSweXexfpn1H/P/vocBUPJgAA</Form>
-  <Code><![CDATA[
-#-------------------------------------------------------
+  <Code><![CDATA[#-------------------------------------------------------
 # NOTE: When new TabPage added place the validation code
 # 		in the Test-WizardPage function.
 #-------------------------------------------------------
@@ -446,7 +445,6 @@ function Test-WizardPage
 }
 
 
-
 $buttonFinish_Click={
 	#-------------------------------------------------------
 	# TODO: Place finalization script here
@@ -455,7 +453,8 @@ $buttonFinish_Click={
 }
 
 #region Events and Functions
-$formWizard_Load={
+$formWizard_Load = {
+	
 	Update-NavButtons
 	
 	# Load M365DSC Reosurces
@@ -464,6 +463,9 @@ $formWizard_Load={
 	
 	# TODO: Replace List Box with TreeView categorizing resources
 	#  		under their respective workloads
+	$resArray = Get-M365DSCAllResources
+	$workloads = Get-M365DSCWorkloads $resArray
+	Build-ResourceNodeList $resArray $workloads
 }
 
 #region Control Helper Functions
@@ -504,6 +506,60 @@ function Get-CheckedNode
 			[void]$CheckedNodes.Add($Node)
 		}
 		Get-CheckedNode $Node.Nodes $CheckedNodes
+	}
+}
+
+<#
+	.SYNOPSIS
+		This function creates the M365DSC Resource Node List
+	
+	.DESCRIPTION
+		This function creates a TreeView list of M365DSC resource nodes categorized by workload
+	
+	.PARAMETER $Resources
+		A description of the $Resources parameter.
+	
+	.PARAMETER $Workloads
+		A description of the $Workloads parameter.
+	
+	.EXAMPLE
+				PS C:\> Build-ResourceNodeList -$Resources $resources -$Workloads $workloads
+	
+#>
+function Build-ResourceNodeList
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(Mandatory = $true,Position = 1)]
+		[System.Array]$Resources,
+		
+		[Parameter(Mandatory = $true,Position = 2)]
+		[System.Array]$Workloads
+	)
+	
+	# First generate the resource to workload mappings
+	$resourceMappings = @()
+	foreach ($resource in $Resources)
+	{
+		$resourceMappings += Get-M365DSCWorkload $resource
+	}
+	
+	# Build workload nodes
+	foreach ($workload in $Workloads)
+	{
+		# Add the parent workload
+		$resourcesListTree.Nodes.Add($workload)
+		
+		# Add the children resources for the current parent workload
+		foreach ($mapping in $resourceMappings)
+		{
+			if ($workload -eq $mapping.WorkloadName)
+			{
+				$workloadIndex = [array]::IndexOf($Workloads, $workload)
+				$resourcesListTree.Nodes[$workloadIndex].Nodes.Add($mapping.Resource)
+			}
+		}
 	}
 }
 
@@ -714,11 +770,6 @@ $resourcesListBox_SelectedIndexChanged={
 
 ]]></Code>
   <TV>0</TV>
-  <Bookmarks />
-  <BreakPoints>
-    <Line Disabled="True">6</Line>
-  </BreakPoints>
-  <TracePoints />
   <Mode>1</Mode>
   <Assemblies />
 </File>
