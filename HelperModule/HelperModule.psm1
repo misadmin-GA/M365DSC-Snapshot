@@ -76,7 +76,7 @@ function Get-M365DSCWorkload
 		}
 		'O3'
 		{
-			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('MicrosoftGraph') -and $ResName -eq 'O365Group')
+			if (-not $workload.WorkloadName -or -not $workload.WorkloadName.Contains('O365') -and $ResName -eq 'O365Group')
 			{
 				$workload = @{
 					WorkloadName		 = 'O365'
@@ -149,7 +149,7 @@ function Get-M365DSCWorkload
 function Get-M365DSCWorkloads
 {
     [CmdletBinding()]
-    [OutputType([System.Collections.Hashtable])]
+    [OutputType([System.Array])]
     param
     (
         [Parameter(Mandatory = $true, Position = 1)]
@@ -157,106 +157,76 @@ function Get-M365DSCWorkloads
         $ResNames = @()
     )
 
-    [Array]$workloads = @()
+    [String[]]$workloads = @()
     foreach ($res in $ResNames)
     {
         switch ($res.Substring(0, 2).ToUpper())
         {
             'AA'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('MicrosoftGraph'))
+                if (-not $workloads -or -not $workloads.Contains('AzureAD'))
                 {
-                    $workloads += @{
-                        Name                 = 'MicrosoftGraph'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'AzureAD'
                 }
             }
             'EX'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('ExchangeOnline'))
+                if (-not $workloads -or -not $workloads.Contains('ExchangeOnline'))
                 {
-                    $workloads += @{
-                        Name                 = 'ExchangeOnline'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'ExchangeOnline'
                 }
             }
             'In'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('MicrosoftGraph'))
+                if (-not $workloads -or -not $workloads.Contains('Intune'))
                 {
-                    $workloads += @{
-                        Name                 = 'MicrosoftGraph'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'Intune'
                 }
             }
             'O3'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('MicrosoftGraph') -and $res -eq 'O365Group')
+                if (-not $workloads -or -not $workloads.Contains('O365') -and $res -eq 'O365Group')
                 {
-                    $workloads += @{
-                        Name                 = 'MicrosoftGraph'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'O365'
                 }
-                elseif (-not $workloads.Name -or -not $workloads.Name.Contains('ExchangeOnline'))
+                elseif (-not $workloads -or -not $workloads.Contains('ExchangeOnline'))
                 {
-                    $workloads += @{
-                        Name                 = 'ExchangeOnline'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'ExchangeOnline'
                 }
             }
             'OD'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('PnP'))
+                if (-not $workloads -or -not $workloads.Contains('OneDrive'))
                 {
-                    $workloads += @{
-                        Name                 = 'PnP'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'OneDrive'
                 }
             }
             'Pl'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('MicrosoftGraph'))
+                if (-not $workloads -or -not $workloads.Contains('Planner'))
                 {
-                    $workloads += @{
-                        Name                 = 'MicrosoftGraph'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'Planner'
                 }
             }
             'SP'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('PnP'))
+                if (-not $workloads -or -not $workloads.Contains('SharePoint'))
                 {
-                    $workloads += @{
-                        Name                 = 'PnP'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'SharePoint'
                 }
             }
             'SC'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('SecurityComplianceCenter'))
+                if (-not $workloads -or -not $workloads.Contains('SecurityComplianceCenter'))
                 {
-                    $workloads += @{
-                        Name                 = 'SecurityComplianceCenter'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'SecurityComplianceCenter'
                 }
             }
             'Te'
             {
-                if (-not $workloads.Name -or -not $workloads.Name.Contains('MicrosoftTeams'))
+                if (-not $workloads -or -not $workloads.Contains('MicrosoftTeams'))
                 {
-                    $workloads += @{
-                        Name                 = 'MicrosoftTeams'
-                        AuthenticationMethod = $res.AuthenticationMethod
-                    }
+                    $workloads += 'MicrosoftTeams'
                 }
             }
         }
