@@ -28,6 +28,10 @@ function Generate365DSCCertificate
     Set-M365DSCAgentCertificateConfiguration -ForceRenew
 }
 
+#
+# TODO: Add ToolTipText Description for each node
+#
+
 # Returns hashmap of a resource and its respective workload
 # This is for the generation of the resources checklist in Tenant Export User Interface
 function Get-M365DSCWorkload
