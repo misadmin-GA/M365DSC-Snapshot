@@ -36,6 +36,7 @@ function Generate365DSCCertificate
 # This is for the generation of the resources checklist in Tenant Export User Interface
 function Get-M365DSCWorkload
 {
+	[CmdletBinding()]
 	[OutputType([System.Collections.Hashtable])]
 	param
 	(
@@ -120,6 +121,7 @@ function Get-M365DSCWorkload
 # Function for returning distinct workloads used from a list of M365DSC Resources
 function Get-M365DSCWorkloads
 {
+	[CmdletBinding()]
     param
     (
         [Parameter(Mandatory = $true, Position = 1)]

@@ -378,10 +378,7 @@ oGm4F6houh6L30g/i0Cka1W5MnSNi5sN2qi6bsdAi3bFVXfreYqQRva7/olleunwOTQAE+PR53fQ
 gJZZP5PxX4kG1HVEPyrBjzfzTJyTvcefsd/4kU9ch5/QabS6R+jJQdRGqLRrRwmKNluxoKR8nFRQ
 inqTg/XR7kqyX3y4q5xbWAZsU/lVTuL2417lqIVMDadBLsZX4x8foOuVT6u/Coy9nh4DvcgSDPRD
 OsmFXoVnXKrGlZ9u9fpxx1sacBUHW24L9PMOtrJz6eDj3of0X9H7DxGaV7FDJAAA</Form>
-  <Code><![CDATA[# Global variables
-$global:M365DSCResources = Get-M365DSCAllResources
-$global:M365DSCWorkloads = Get-M365DSCWorkloads $M365DSCResources
-
+  <Code><![CDATA[
 #-------------------------------------------------------
 # NOTE: When new TabPage added place the validation code
 # 		in the Test-WizardPage function.
@@ -416,77 +413,6 @@ function Test-WizardPage
 	return $true
 }
 
-
-$buttonFinish_Click={
-	#-------------------------------------------------------
-	# TODO: Place finalization script here
-	#-------------------------------------------------------
-	
-}
-
-#region Events and Functions
-$formWizard_Load = {
-	
-	Update-NavButtons
-	
-	# Generate TreeView of Workloads and their respective resources
-	Build-ResourceNodeList $M365DSCResources $M365DSCWorkloads
-}
-
-#------------------------------------------------------
-# NOTE: When a Control State changes you should call
-# 		Update-NavButtons to trigger validation
-#------------------------------------------------------
-
-$exportUsernameBox_TextChanged = {
-	Update-NavButtons
-}
-
-$tabcontrolWizard_SelectedIndexChanged = {
-	#TODO: Place custom script here
-	
-}
-
-$labelExportUserName_Click = {
-	#TODO: Place custom script here
-	
-}
-
-$labelEnterO365TenantCreds_Click = {
-	#TODO: Place custom script here
-	
-}
-
-$buttonExport_Click = {
-	# Grab creds entered in Text Boxes
-	$username = $exportUsernameBox.Text
-	$password = $exportPasswordBox.Text | ConvertTo-SecureString -AsPlainText -Force
-	
-	# Build source tenant creds object
-	$srcCreds = [System.Management.Automation.PSCredential]::new($username, $password)
-	
-	# Export config using $srcCreds
-	#TODO: Create text field for user to provide config name
-	#TODO: Create list of Components to be exported
-	$configComponents = @("EXOHostedContentFilterPolicy", "EXOHostedConnectionFilterPolicy", "EXOHostedOutboundSpamFilterPolicy")
-	$configName = "TestExport"
-	
-	# Define M365 Config object
-	$fileName = $configName + ".ps1"
-	$configObj = [M365Config]::New($fileName, $configComponents, $configName, (Join-Path "C:\Users\Administrator\Documents\" $configName))
-	
-	Write-Host $srcCreds.UserName + "  " + $srcCreds.Password
-	$res = $configObj.Export($srcCreds)
-}
-
-$resourcesListTree_AfterCheck = [System.Windows.Forms.TreeViewEventHandler]{
-	#Event Argument: $_ = [System.Windows.Forms.TreeViewEventArgs]
-	# Toggle all resource nodes if a workload is selected
-	Check-ResourceNodes $_.Node
-}
-
-
-#endregion
 
 #region Control Helper Functions
 <#
@@ -630,6 +556,11 @@ function Build-ResourceNodeList
 	}
 }
 
+#------------------------------------------------------
+# NOTE: When a Control State changes you should call
+# 		Update-NavButtons to trigger validation
+#------------------------------------------------------
+
 function Update-NavButtons
 {
 	<# 
@@ -645,25 +576,30 @@ function Update-NavButtons
 	#$buttonFinish.Visible = ($tabcontrolWizard.SelectedIndex -eq $tabcontrolWizard.TabCount - 1)
 }
 
+
+#endregion
+
+#region Events and Functions
+
 $script:DeselectedIndex = -1
-$tabcontrolWizard_Deselecting=[System.Windows.Forms.TabControlCancelEventHandler]{
-#Event Argument: $_ = [System.Windows.Forms.TabControlCancelEventArgs]
+$tabcontrolWizard_Deselecting = [System.Windows.Forms.TabControlCancelEventHandler]{
+	#Event Argument: $_ = [System.Windows.Forms.TabControlCancelEventArgs]
 	# Store the previous tab index
 	$script:DeselectedIndex = $_.TabPageIndex
 }
 
-$tabcontrolWizard_Selecting=[System.Windows.Forms.TabControlCancelEventHandler]{
-#Event Argument: $_ = [System.Windows.Forms.TabControlCancelEventArgs]
+$tabcontrolWizard_Selecting = [System.Windows.Forms.TabControlCancelEventHandler]{
+	#Event Argument: $_ = [System.Windows.Forms.TabControlCancelEventArgs]
 	# We only validate if we are moving to the Next TabPage. 
 	# Users can move back without validating
-	if($script:DeselectedIndex -ne -1 -and $script:DeselectedIndex -lt $_.TabPageIndex)
+	if ($script:DeselectedIndex -ne -1 -and $script:DeselectedIndex -lt $_.TabPageIndex)
 	{
 		#Validate each page until we reach the one we want
-		for($index = $script:DeselectedIndex; $index -lt $_.TabPageIndex; $index++)
+		for ($index = $script:DeselectedIndex; $index -lt $_.TabPageIndex; $index++)
 		{
 			$_.Cancel = -not (Test-WizardPage $tabcontrolWizard.TabPages[$index])
 			
-			if($_.Cancel) 
+			if ($_.Cancel)
 			{
 				# Cancel and Return if validation failed.
 				return;
@@ -673,8 +609,71 @@ $tabcontrolWizard_Selecting=[System.Windows.Forms.TabControlCancelEventHandler]{
 	
 	Update-NavButtons
 }
-#endregion
-]]></Code>
+
+$formWizard_Load = {
+	
+	Update-NavButtons
+	
+	# Generate TreeView of Workloads and their respective resources
+	Build-ResourceNodeList $M365DSCResources $M365DSCWorkloads
+}
+
+$exportUsernameBox_TextChanged = {
+	Update-NavButtons
+}
+
+$tabcontrolWizard_SelectedIndexChanged = {
+	#TODO: Place custom script here
+	
+}
+
+$labelExportUserName_Click = {
+	#TODO: Place custom script here
+	
+}
+
+$labelEnterO365TenantCreds_Click = {
+	#TODO: Place custom script here
+	
+}
+
+$buttonExport_Click = {
+	# Grab creds entered in Text Boxes
+	$username = $exportUsernameBox.Text
+	$password = $exportPasswordBox.Text | ConvertTo-SecureString -AsPlainText -Force
+	
+	# Build source tenant creds object
+	$srcCreds = [System.Management.Automation.PSCredential]::new($username, $password)
+	
+	# Export config using $srcCreds
+	#TODO: Create text field for user to provide config name
+	#TODO: Create list of Components to be exported
+	$configComponents = @("EXOHostedContentFilterPolicy", "EXOHostedConnectionFilterPolicy", "EXOHostedOutboundSpamFilterPolicy")
+	$configName = "TestExport"
+	
+	# Define M365 Config object
+	$fileName = $configName + ".ps1"
+	$configObj = [M365Config]::New($fileName, $configComponents, $configName, (Join-Path "C:\Users\Administrator\Documents\" $configName))
+	
+	Write-Host $srcCreds.UserName + "  " + $srcCreds.Password
+	$res = $configObj.Export($srcCreds)
+}
+
+$buttonFinish_Click = {
+	#-------------------------------------------------------
+	# TODO: Place finalization script here
+	#-------------------------------------------------------
+	
+}
+
+$resourcesListTree_AfterCheck = [System.Windows.Forms.TreeViewEventHandler]{
+	#Event Argument: $_ = [System.Windows.Forms.TreeViewEventArgs]
+	# Toggle all resource nodes if a workload is selected
+	Check-ResourceNodes $_.Node
+}
+
+
+#endregion]]></Code>
   <TV>0</TV>
   <Mode>1</Mode>
   <Assemblies />

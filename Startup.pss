@@ -25,6 +25,11 @@ function Main {
 	
 	Import-Module .\HelperModule
 	
+	# Global variables
+	$global:M365DSCResources = Get-M365DSCAllResources
+	$global:M365DSCWorkloads = Get-M365DSCWorkloads $M365DSCResources
+	
+	
 	#Show-TenantExport_psf
 	Show-M365DSC-Export_psf
 	#--------------------------------------------------------------------------
