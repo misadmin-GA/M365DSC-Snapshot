@@ -468,7 +468,7 @@ function Get-CheckedNode
 		The collection of nodes to search
 
 	.PARAMETER  $CheckedNodes
-		The ArrayList that will contain the all the checked items
+		The ArrayList that will contain all the checked items
 	
 	.EXAMPLE
 		$CheckedNodes = New-Object System.Collections.ArrayList
@@ -647,14 +647,27 @@ $buttonExport_Click = {
 	
 	# Export config using $srcCreds
 	#TODO: Create text field for user to provide config name
-	#TODO: Create list of Components to be exported
-	$configComponents = @("EXOHostedContentFilterPolicy", "EXOHostedConnectionFilterPolicy", "EXOHostedOutboundSpamFilterPolicy")
-	$configName = "TestExport"
+	
+	# Build ArrayList of Checked Nodes
+	$checkedNodes = New-Object System.Collections.ArrayList
+	Get-CheckedNode $resourcesListTree.Nodes $checkedNodes
+	
+	# Parse out workloads from the checkedNodes ArrayList
+	$configComponents = New-Object System.Collections.ArrayList
+	foreach ($node in $checkedNodes)
+	{
+		$currNodeStr = (($node.ToString()).Split(':')[1]).Trim()
+		if (-not ($M365DSCWorkloads.Contains($currNodeStr)))
+		{
+			$configComponents.Add($currNodeStr)
+		}
+	}
 	
 	# Define M365 Config object
+	$configName = "TestExport"
 	$fileName = $configName + ".ps1"
 	$configObj = [M365Config]::New($fileName, $configComponents, $configName, (Join-Path "C:\Users\Administrator\Documents\" $configName))
-	
+
 	Write-Host $srcCreds.UserName + "  " + $srcCreds.Password
 	$res = $configObj.Export($srcCreds)
 }
