@@ -14,9 +14,18 @@ class M365Config
         $this.fileName = "M365Config.ps1"
         $this.components = @("")
         $this.configDir = $this.fileName.Split('.')[0]
-    }
-
-    # Constructor for M365DSCConfig
+	}
+	
+	# Constructor used for Compiling and Deploying a config
+	M365Config([String]$file, [String]$name, [String]$path)
+	{
+		$this.rootPath = $path
+		$this.fileName = $file
+		$this.configDir = $name
+		$this.mofPath = (Join-Path $this.rootPath $this.configDir)
+	}
+	
+	# Constructor for M365DSCConfig
     M365Config([String]$file, [String[]]$components, [String]$name, [String]$path)
     {
         $this.fileName = $file
@@ -41,9 +50,9 @@ class M365Config
         {
             Write-Output "[!] " + $_.Exception.Message
             return -1
-        }
-
-        return 0
+		}
+		
+		return 0
     }
 
     # Compile the exported cofig using specified creds (can be either original src or dest 365 tenant)
