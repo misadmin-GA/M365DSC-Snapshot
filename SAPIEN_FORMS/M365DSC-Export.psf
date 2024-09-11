@@ -714,15 +714,13 @@ $resourcesListTree_AfterSelect = [System.Windows.Forms.TreeViewEventHandler]{
 
 #region Deploy Tab Events and Functions
 $buttonDeployConfig_Click = {
-	#TODO: Add code to first compile specified config with supplied creds
-	# 		and then deploy to destination tenant
+	#TODO: Implement Error Handling
+	
 	# Define M365 Config object
 	$configFilePath = $textboxDeployConfigFilePath.Text
 	$fileName = Split-Path $configFilePath -Leaf
 	$configName = $fileName.Split(".")[0]
 	
-	# TODO2: Create M365Config constructor used for compiling and deploying
-	# TODO3: Test to ensure attributes are correctly populated for configObj
 	$configDirPath = Split-Path $configFilePath -Parent
 	$configObj = [M365Config]::New($fileName, $configName, $configDirPath)
 	
