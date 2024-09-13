@@ -578,22 +578,15 @@ $tabcontrolWizard_Selecting = [System.Windows.Forms.TabControlCancelEventHandler
 	}
 }
 
-$formM365DSCSnapshot_Load = {
-
-	# Generate TreeView of Workloads and their respective resources
-	Build-ResourceNodeList $M365DSCResources $M365DSCWorkloads
-}
-
 $tabcontrolWizard_SelectedIndexChanged = {
 	#TODO: Place custom script here
 	
 }
 
-$buttonFinish_Click = {
-	#-------------------------------------------------------
-	# TODO: Place finalization script here
-	#-------------------------------------------------------
+$formM365DSCSnapshot_Load = {
 	
+	# Generate TreeView of Workloads and their respective resources
+	Build-ResourceNodeList $M365DSCResources $M365DSCWorkloads
 }
 #endregion
 
